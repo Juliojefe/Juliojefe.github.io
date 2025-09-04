@@ -4,33 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+  <style>
+    #teamH1 {
+      /* color: white; */
+      /* background-color: white; */
+      text-align: center;
+      font-size: 2.5em;
+      padding: 20px 0;
+    }
+    #row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: fit-content;
+      margin: 0 auto;
+    }
+    .imageFig {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .innerImage {
+      width: 200px;
+      height: 200px;
+      border: 5px solid black;
+      object-fit: cover;
+      margin: 20px;
+      border-radius: 4%;
+    }
+  </style>
+
 </head>
 <body>
     <div>
-      <h1> Team 11 </h1>
+      <h1 id = "teamH1"> Team 11 </h1>
     </div>
     <header>
-      <a href="home.html"> Home </a>
-      <a href="contact.html"> About </a>
-      <a href="about.html"> Contact </a>
+      <a href="index.html"> Home </a>
+      <a href="about.html"> About </a>
+      <a href="contact.html"> Contact </a>
     </header>
-    <div>
-      <div>
-        <img src="./img/kevin.png" width="200px" length="200px">
-        <h4>Kevin Crapo</h4>
-      </div>
-      <div>
-        <img src="./img/Julio.jpg" width="200px" length="200px">
-        <h4>Julio Fernandez</h4>
-      </div>
-      <div>
-        <img src="./img/Brandon.jpg" width="200px" length="200px">
-        <h4>Brandon Algarra</h4>
-      </div>
-      <div>
-        <img src="./img/Oscar.jpg" width="200px" length="200px">
-        <h4>Oscar Gonzalez</h4>
-      </div>
+    <div id="row">
+      <figure class = "imageFig">
+        <img src="./img/kevin.png" class="innerImage">
+        <figcaption>Kevin Crapo</figcaption>
+      </figure>
+      <figure class = "imageFig">
+        <img src="./img/Julio.jpg" class="innerImage">
+        <figcaption>Julio Fernandez</figcaption>
+      </figure>
+      <figure class = "imageFig">
+        <img src="./img/Brandon.jpg" class="innerImage">
+        <figcaption>Brandon Algarra</figcaption>
+      </figure>
+      <figure class = "imageFig">
+        <img src="./img/Oscar.jpg" class="innerImage">
+        <figcaption>Oscar Gonzalez</figcaption>
+      </figure>
     </div>
     <footer>
       <div>
