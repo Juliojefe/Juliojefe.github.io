@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="lab1.css" />
-
-</head>
-<body>
+  </head>
+  <body>
     <div>
-      <h1 id="teamH1"> Team 11 </h1>
+      <h1 id="teamTitle"> Team 11 </h1>
     </div>
     <header id="headerNav">
-      <a href="index.html"> Home </a>
-      <a href="about.html"> About </a>
-      <a href="contact.html"> Contact </a>
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
     </header>
-    <div id="row">
-      <figure class = "imageFig">
-        <img src="./img/kevin.png" class="innerImage">
+    <div id="teamMembersRow">
+      <figure class="teamMember">
+        <img src="./img/kevin.png" class="memberPhoto">
         <figcaption>Kevin Crapo</figcaption>
       </figure>
-      <figure class = "imageFig">
-        <img src="./img/Julio.jpg" class="innerImage">
+      <figure class="teamMember">
+        <img src="./img/Julio.jpg" class="memberPhoto">
         <figcaption>Julio Fernandez</figcaption>
       </figure>
-      <figure class = "imageFig">
-        <img src="./img/Brandon.jpg" class="innerImage">
+      <figure class="teamMember">
+        <img src="./img/Brandon.jpg" class="memberPhoto">
         <figcaption>Brandon Algarra</figcaption>
       </figure>
-      <figure class = "imageFig">
-        <img src="./img/Oscar.jpg" class="innerImage">
+      <figure class="teamMember">
+        <img src="./img/Oscar.jpg" class="memberPhoto">
         <figcaption>Oscar Gonzalez</figcaption>
       </figure>
     </div>
+    <div id="welcomeSection">
+      <h2 id="welcomeTitle">Welcome to our page!</h2>
+    </div>
+    <div id="quoteSection">
+      <h2 id="quoteText">"Be the reason someone smiles." - Roy T. Bennett</h2>
+    </div>
     <footer>
-      <div>
-        <h2>Welcome to our page!</h2>
-      </div>
-      <div>
-        <h2>"Be the reason someone smiles." - Roy T. Bennett</h2>
-      </div>
-      <div id="logoDiv">
-        <img src="./img/csumb_logo.jpg">
+      <div id="footerContentBox">
+        <img src="./img/csumb_logo.png">
+        <div id="footerText"> CST336 Internet Programming. 2025© Crapo, Fernandez, Algarra, Gonzalez <br>
+          <span id="footerDisclaimer">Disclaimer: The information in this webpage is fictitious. It is used for academic purposes only.</span>
+        </div>
       </div>
     </footer>
-</body>
+  </body>
 </html>
