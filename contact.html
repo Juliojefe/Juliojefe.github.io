@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="lab1.css" />
+  </head>
+  <body>
     <div>
-      <h1> Team 11 </h1>
-    </div>
-    <header>
-      <a href="index.html"> Home </a>
-      <a href="contact.html"> About </a>
-      <a href="about.html"> Contact </a>
-    </header>
-
-    <footer>
+      <h1 id="teamH1">Contact</h1>
       <div>
-        <h2>Welcome to our page!</h2>
+        <h1 id="teamTitle"> Team 11 </h1>
       </div>
-      <div>
-        <h2>"Be the reason someone smiles." - Roy T. Bennett</h2>
+      <header id="headerNav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="active">Contact</a>
+      </header>
+      <div class="googleFormDiv">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfb-jR7T9MOvJwGhQJJotzXz6L6JZYKwa_6fRTBMrBl6mQQHQ/viewform?usp=sharing&ouid=112596087497849111138" width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
       </div>
-      <div>
-        <img src="./img/csumb_logo.jpg">
+      <div id="welcomeSection">
+        <h2 id="welcomeTitle">Welcome to our page!</h2>
       </div>
-    </footer>
-</body>
+      <div id="quoteSection">
+        <h2 id="quoteText">"Be the reason someone smiles." - Roy T. Bennett</h2>
+      </div>
+      <footer>
+        <div id="footerContentBox">
+          <img src="./img/csumb_logo.png">
+          <div id="footerText"> CST336 Internet Programming. 2025© Crapo, Fernandez, Algarra, Gonzalez <br>
+            <span id="footerDisclaimer">Disclaimer: The information in this webpage is fictitious. It is used for academic purposes only.</span>
+          </div>
+        </div>
+      </footer>
+  </body>
 </html>
