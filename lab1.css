@@ -59,12 +59,11 @@
 .googleFormDiv {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 80vh;
 }
-.googleFormDiv iframe {
+#googleFormIframe {
   border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  width: 900px;
+  height: 800px;
   border: none;
 }
 #footerContentBox {
@@ -83,21 +82,48 @@
 }
 #footerText {
   color: gold;
-  font-size: 1.3em; 
+  font-size: 0.7em; 
   margin-top: 10px;
 }
 #footerDisclaimer {
   font-size: 1em;
 }
 #welcomeSection {
-
+  text-align: center;
 }
-#welcomeTitle {
-
+#welcomeText {
+ font-family: cursive;
 }
 #quoteSection {
-
+  text-align: center;
 }
 #quoteText {
-
+ font-family: cursive;
+}
+.ProgramingTable{
+  border-collapse: collapse;
+  margin: 30px auto;
+  width: 60%;
+}
+.ProgramingTable td {
+  border: 1px solid #4a68b5;
+  padding: 12px 18px;
+  text-align: left;
+}
+.ProgramingTable th {
+  border: 1px solid #4a68b5;
+  padding: 12px 18px;
+  text-align: left;
+}
+.hobbiesSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hobbiesTitle {
+  margin-bottom: -5px;
+  font-size: 1.6em;
+}
+.hobbiesList {
+  font-size: 1.3em;
 }
