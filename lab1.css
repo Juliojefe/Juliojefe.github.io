@@ -90,14 +90,14 @@
   font-size: 1em;
 }
 #welcomeSection {
-
+  text-align: center;
 }
-#welcomeTitle {
-
+#welcomeText {
+ font-family: cursive;
 }
 #quoteSection {
-
+  text-align: center;
 }
 #quoteText {
-
+ font-family: cursive;
 }
