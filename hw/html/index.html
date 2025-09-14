@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  </head>
+  <body>
+    <div class="focalPointDiv">
+      <div class="navBarDiv">
+        <h1> Steghide </h1>
+        <header>
+          <a href="index.html" class="active">About</a>
+          <a href="demo.html">Demo</a>
+          <a href="commands.html">Commands</a>
+          <a href="legal_disclaimer.html">Legal Disclaimer</a>
+        </header>
+      </div>
+      <main class="pageCenterDiv">
+        <h1>What is steghide?</h1>
+
+        <span id="footnote-label" class="sr-only"></span>
+        <img src="../img/inspector.png" alt="Eye illustration" class="floatRightImg">
+        <p>
+          Before explaining what steghide 
+          <sup id="ref-1" role="doc-noteref"><a href="#fn-1" aria-describedby="footnote-label">[1]</a></sup>
+          does and what it is, one must first understand that steganography 
+          is “the art or practice of concealing a message, image, or file within another message, image, or file” 
+          <sup id="ref-2" role="doc-noteref"><a href="#fn-2" aria-describedby="footnote-label">[2]</a></sup>.
+        </p>
+        <p>
+          Steghide is an open-source steganography tool that hides files within other files. This tool is versatile and can hide a 
+          wide variety of file types. For example, it is able to hide video, audio, image, executable, and zip files, among many others. 
+          It achieves this in a way that conceals the very existence of the embedded information. One limitation that Steghide has, 
+          however, is that it only supports jpg, jpeg, and bmp image files and wav and au audio files as cover files. This means it 
+          can hide essentially any kind of file within this slightly limited selection of cover files. This, however, is not a 
+          major drawback because it does its job extremely well.
+        </p>
+        <p>
+          Least significant bit encoding is used for hiding files, allowing for minimal distortion. Steghide also supports 
+          Rijndael encryption 
+          <sup id="ref-3" role="doc-noteref"><a href="#fn-3" aria-describedby="footnote-label">[3]</a></sup>, 
+          which is an advanced encryption standard algorithm with a user-defined password to 
+          secure the data. This adds an extra layer of security, as even if the file is discovered to be hiding data, the data itself will 
+          be encrypted, and only the correct password will reveal the content. Compression options are also available, allowing larger
+          files to be hidden inside of smaller ones. Additionally, Steghide supports the extraction of files contained within other files, 
+          given the correct password. In this way, Steghide is able both to hide files and to extract them, making two-way 
+          communication possible.
+        </p>
+        <p>
+          By virtue of being open source, anyone can inspect and modify its code. Furthermore, anyone can contribute to its 
+          development. Because it is open source, it is maintained through community efforts.
+        </p>
+
+      </main>
+      <footer class="footer">
+        <h2>References</h2>
+        <ol class="references">
+          <li id="fn-1" role="doc-endnote">
+            repo — <a href="https://github.com/StegHigh/steghide" rel="noopener">Link</a>
+            <a href="#ref-1" class="backref" aria-label="Back to content">↩︎</a>
+          </li>
+          <li id="fn-2" role="doc-endnote">
+            Merriam Webster — <a href="https://www.merriam-webster.com/dictionary/steganography#:~:text=%3A%20the%20art%20or%20practice%20of,another%20message%2C%20image%2C%20or%20file" rel="noopener">Link</a>
+            <a href="#ref-2" class="backref" aria-label="Back to content">↩︎</a>
+          </li>
+          <li id="fn-3" role="doc-endnote">
+            techtarget — <a href="https://www.techtarget.com/searchsecurity/definition/Rijndael" rel="noopener">Link</a>
+            <a href="#ref-3" class="backref" aria-label="Back to content">↩︎</a>
+          </li>
+        </ol>
+      </footer>
+    </div>
+  </body>
+</html>
