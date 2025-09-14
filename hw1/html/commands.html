@@ -18,19 +18,97 @@
         </header>
       </div>
       <main class="pageCenterDiv">
-        <span id="footnote-label" class="sr-only"></span>
-        <p> Steganography hides data in media <sup id="ref-1" role="doc-noteref">
-            <a href="#fn-1" aria-describedby="footnote-label">[1]</a>
-          </sup> and can be detected with noise analysis <sup id="ref-2" role="doc-noteref">
-            <a href="#fn-2" aria-describedby="footnote-label">[2]</a>
-          </sup>. </p>
+        <h1>More neat commands</h1>
+        <p>
+          In the demonstration that I provided we got to see several of steghides commands in action.Steghide however 
+          is not limited to those commands and functionalities. For example we did not see that steghide has a command to 
+          display all of the encryption algorithms that they support. As you can see below they support many different 
+          encryption algorithms all which can be chosen with a different command.
+        </p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">steghide --encinfo</span></span>
+          <span class="output">encryption algorithms:</span>
+          <span class="output">&lt;algorithm&gt;: &lt;supported modes&gt;...</span>
+          <span class="output">cast-128: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">gost: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">rijndael-128: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">twofish: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">arcfour: stream</span>
+          <span class="output">cast-256: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">loki97: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">rijndael-192: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">saferplus: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">wake: stream</span>
+          <span class="output">des: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">rijndael-256: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">serpent: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">xtea: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">blowfish: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">enigma: stream</span>
+          <span class="output">rc2: cbc cfb ctr ecb ncfb nofb ofb</span>
+          <span class="output">tripledes: cbc cfb ctr ecb ncfb nofb ofb</span>
+        </code></pre>
+        <p>
+          In the previous example we could have chosen to encode using any of these encryption methods. To select which encryption -e
+          followed by our choice would have been used. We could have also chosen to hide the embed files name by using -N. Quickly I
+          will show those two in action by running the following command.
+        </p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">steghide embed -cf ferrari.jpg -ef sample-data.csv -sf steg_ferrari2.jpg -p mysecretpass -e "blowfish cbc" -N</span></span>
+          <span class="output">embedding "sample-data.csv" in "ferrari.jpg"... done</span>
+          <span class="output">writing stego file "steg_ferrari2.jpg"... done</span>
+        </code></pre>
+        <p>
+          I have created a new file by the name of steg_ferrari2.jpg which is distinct and separate from the steg_ferrari.jpg 
+          from the previous demonstration. I also used -N so that the name of the embedded file is kept secret and I used -e to 
+          set the encryption method to blowfish cbc. This is what all three files look like side by side. Visually they are  indistinguishable.
+        </p>
+        <div class="imageSideBySide3">
+          <figure>
+            <img src="../img/ferrari.jpg">
+            <figCaption>ferrari.jpg</figCaption>
+          </figure>
+          <figure>
+            <img src="../img/steg_ferrari.jpg">
+            <figCaption>steg_ferrari.jpg</figCaption>
+          </figure>
+          <figure>
+            <img src="../img/steg_ferrari2.jpg">
+            <figCaption>steg_ferrari2.jpg</figCaption>
+          </figure>
+        </div>
+        <p>
+        <p>
+          Then by using the info command and entering in the correct passphrase we can see that the name of the hidden file is
+          not given to us and that blowfish cbc encryption was used.
+        </p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">steghide --info steg_ferrari2.jpg</span></span>
+          <span class="output">"steg_ferrari2.jpg":</span>
+          <span class="output">  format: jpeg</span>
+          <span class="output">  capacity: 16.2 KB</span>
+          <span class="output">Try to get information about embedded data ? (y/n) y</span>
+          <span class="output">Enter passphrase:</span>
+          <span class="output">  embedded data:</span>
+          <span class="output">    size: 4.6 KB</span>
+          <span class="output">    encrypted: blowfish, cbc</span>
+          <span class="output">    compressed: yes</span>
+        </code></pre>
+        <p>
+          These are a few more commands and there are many more to explore. Funny enough you can actually learn about more
+          commands by running the “man steghide” command. By reading through this documentation you can learn about commands
+          that allow you to choose between compressing or not as well as at what compression level to embed your files. You 
+          can also read more directly on their github<sup id="ref-1" role="doc-noteref"><a href="#fn-1" aria-describedby="footnote-label">[1]</a></sup>. 
+        </p>
       </main>
       <footer class="footer">
         <h2>References</h2>
         <ol class="references">
-          <li id="fn-1" role="doc-endnote"> Author, Title, Year, URL. <a href="#ref-1" class="backref" aria-label="Back to content">↩︎</a>
-          </li>
-          <li id="fn-2" role="doc-endnote"> Author, Title, Year, URL. <a href="#ref-2" class="backref" aria-label="Back to content">↩︎</a>
+          <li id="fn-1" role="doc-endnote">
+            repo — <a href="https://github.com/StegHigh/steghide" target="_blank">Link</a>
           </li>
         </ol>
       </footer>
