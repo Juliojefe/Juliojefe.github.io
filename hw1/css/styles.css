@@ -1,0 +1,158 @@
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background-color: #002952;
+
+}
+.navBarDiv {
+  place-items: center;
+  padding: 0;
+  background-color: black;
+  padding-top: 10px;
+}
+
+.navBarDiv h1 {
+  font-size: 28px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding-top: 10px;
+  font-size: 300%;
+  font-family: Tahoma;
+}
+
+.navBarDiv header {
+  padding: 20px 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  background: #ffffff;
+  width: 100%;
+  background: transparent;
+  display: flex;
+}
+
+.navBarDiv header a {
+  padding: 8px 12px;
+  border: 2px solid black;
+  background-color: #ffffff;
+  color: black;
+}
+
+.navBarDiv header a.active {
+  background-color: #6b6b6b;
+  color: #ffffff;
+}
+
+.navBarDiv header a:hover {
+  color: #ffffff;
+  background-color: #0D417B;
+}
+
+.focalPointDiv {
+  width: 85%;
+  margin: 0 auto;
+  background-color: #cbc9c9;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.footer {
+  margin-top: 2%;
+  padding: 10px 10px;
+  background: black;
+  color: white;
+  font-family: Tahoma;
+}
+
+.footer h2 {
+  margin-left: 20px;
+  font-family: 'Tahoma';
+}
+
+.pageCenterDiv {
+  display: flow-root;
+}
+
+.floatRightImg {
+  float: right;
+  width: 20%;
+  height: auto;
+  margin-right: 1.25%;
+}
+
+.pageCenterDiv p {
+  margin-left: 5%;
+  margin-right: 10%;
+  margin-top: 2%;
+  font-size: larger;
+  font-family: Tahoma;
+}
+
+.pageCenterDiv h1 {
+  margin-top: 4%;
+  margin-left: 2.5%;
+  font-family: Tahoma;
+}
+
+.csvScreenShot {
+  margin-left: 7.5%;
+  margin-right: 10%;
+  width: 80%;
+  height: 100%s;
+  border: 5px solid black;
+  object-fit: contain;
+}
+
+.terminal {
+  background: black;
+  font-family: ui-monospace, SFMono-Regular, "Roboto Mono", "Courier New", monospace;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(2,8,23,0.6);
+  margin-left: 6.5%;
+  padding: 10px;
+  margin-right: 10%;
+  padding: 12px 16px;
+  line-height: 1.5;
+}
+
+.terminal .prompt { 
+  color: #ffffff; 
+  line-height: inherit;
+}
+
+.terminal .command { 
+  color: #00d1ff;
+  line-height: inherit;
+}
+
+.terminal .output { 
+  color: #ffcc66; 
+  line-height: inherit;
+}
+
+.terminal .file { 
+  color: #ffcc66;
+  line-height: inherit; 
+} 
+
+.imageSideBySide {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  text-align: center;
+  padding-left: 2.5%;
+  padding-right: 10%;
+  font-family: Tahoma;
+}
+
+.imageSideBySide img {
+  width: 100%;
+  height: 400px;
+  border: 5px solid black;
+  object-fit: cover;
+}
