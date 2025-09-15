@@ -82,14 +82,15 @@ body {
   float: right;
   width: 20%;
   height: auto;
-  margin-right: 1.25%;
+  margin-right: 5%;
+  padding-bottom: 20px;
 }
 
 .floatRightlogo {
   float: right;
-  width: 10%;
+  width: 25%;
   height: auto;
-  margin-right: 9.8%
+  margin-right: 5%
 }
 
 .pageCenterDiv p {
