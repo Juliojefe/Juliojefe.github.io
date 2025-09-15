@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+  <body>
+    <div class="focalPointDiv">
+      <div class="navBarDiv">
+        <h1> Steghide </h1>
+        <header>
+          <a href="index.html">About</a>
+          <a href="demo.html" class="active">Demo</a>
+          <a href="commands.html">Commands</a>
+          <a href="legal_disclaimer.html">Legal Disclaimer</a>
+        </header>
+      </div>
+      <main class="pageCenterDiv">
+        <h1>Demonstration with Personal Data</h1>
+        <p>
+          Below is a demonstration of how some fake personal data could be hidden inside of a jpg. The data is 
+          inside of a csv file and it contains fictitious yet realistic looking social society numbers, birthdates, 
+          names, addresses, home city and state, and phone number on 31 fake people 
+          <sup id="ref-1" role="doc-noteref"><a href="#fn-1">[1]</a></sup>. A malicious 
+          actor or even someone entrusted with the data might use a tool like Steghide to conceal information deep 
+          within a hard drive, keeping it hidden from prying eyes, or to transmit it without leaving a trace. 
+        </p>
+        <p>To begin, the ls command will show that we have two files.</p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">ls</span></span>
+          <span class="output"><span class="file">ferrari.jpg</span>   <span class="file">sample-data.csv</span></span>
+        </code></pre>
+        <p>These are the contents of the csv file. Although this is fake information the data looks and feels real.</p>
+        <img src="../img/fake_data.png" alt="Contents of sample-data.csv" class="csvScreenShot">
+        <p>
+          Now I will run the following command. The -cf denotes that we are going to use ferrari.jpg as the cover file. 
+          In other words this is the file that we will hide our data behind. The -ef denotes the embedded file. This is the 
+          file we will be hiding. The -sf gives the new file we will be creating a name. This file will look exactly like our 
+          original cover file and within its pixels will be the content of the embedded file. Lastly -p sets mysecretpass 
+          as the passphrase required to extract the hidden under layer.
+        </p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">steghide embed -cf ferrari.jpg -ef sample-data.csv -sf steg_ferrari -p mysecretpass</span></span>
+          <span class="output">embedding "sample-data.csv" in "ferrari.jpg"... done</span>
+          <span class="output">writing stego file "steg_ferrari"... done</span>
+        </code></pre>
+        <p>The ls command will now show us that there are now three files as expected.</p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">ls</span></span>
+          <span class="output"><span class="file">ferrari.jpg</span>   <span class="file">sample-data.csv</span>   <span class="file">steg_ferrari.jpg</span></span>
+        </code></pre>
+        <p>
+          Visually the difference between the ferrari and steg_ferrari are zero and the human eye could never identify that one
+          image contains hidden data by appearance alone. This is what both images look side by side.
+        </p>
+        <div class="imageSideBySide">
+          <figure>
+            <img src="../img/ferrari.jpg">
+            <figCaption>ferrari.jpg</figCaption>
+          </figure>
+          <figure>
+            <img src="../img/steg_ferrari.jpg">
+            <figCaption>steg_ferrari.jpg</figCaption>
+          </figure>
+        </div>
+        <p>
+          Once again there is no visual difference but the data is certainly contained within steg_ferrari and to prove 
+          it I will run the following command. The output of running this command will ask for the passphrase and if I enter 
+          it in correctly we will be given information about the hidden file.
+        </p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">steghide info steg_ferrari.jpg</span></span>
+          <span class="output">"steg_ferrari.jpg":</span>
+          <span class="output">  format: jpeg</span>
+          <span class="output">  capacity: 16.2 KB</span>
+          <span class="output">Try to get information about embedded data ? (y/n) y</span>
+          <span class="output">Enter passphrase:</span>
+          <span class="output">  embedded file: "sample-data.csv":</span>
+          <span class="output">    size: 4.6 KB</span>
+          <span class="output">    encrypted: rijndael-128, cbc</span>
+          <span class="output">    compressed: yes</span>
+        </code></pre>
+        <p>Next to demonstrate the extraction of an embedded file I will run the following command.</p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">steghide extract -sf steg_ferrari.jpg -xf extracted.csv -p mysecretpass</span></span>
+          <span class="output">wrote extracted data to "extracted.csv".</span>
+        </code></pre>
+        <p>
+          The -sf specifies the stego file the -xt specifies what file to output to and -p gives it the  password. If our
+          password is correct we will have access to the embedded data in a new file and running ls shows that we do in fact
+          have a new file with the name of extracted.csv.
+        </p>
+        <pre class="terminal"><code>
+          <span class="prompt">┌──(Julio㉿DESKTOP-STHA33J)-[/mnt/c/Users/Julio/Pictures/steghide_example]</span>
+          <span class="prompt">└─$ <span class="command">ls</span></span>
+          <span class="output"><span class="file">extracted.csv</span>   <span class="file">ferrari.jpg</span>   <span class="file">sample-data.csv</span>   <span class="file">steg_ferrari.jpg</span></span>
+        </code></pre>
+        <p>
+          These are the contents of extracted.csv and as you can see they are identical to the original sample-data.csv data. 
+        </p>
+        <img src="../img/fake_data_extracted.png" alt="extracted.csv" class="csvScreenShot">
+        <p>
+          In this demo you have seen the embedding and extraction of sensitive data into an image. 
+        </p>
+      </main>
+      <footer class="footer">
+        <h2>References</h2>
+        <ol class="references">
+          <li id="fn-1" role="doc-endnote">Fake personal data  — <a href="https://dlptest.com/sample-data/namessndob/" target="_blank">Link</a>
+          </li>
+        </ol>
+      </footer>
+    </div>
+  </body>
+</html>
