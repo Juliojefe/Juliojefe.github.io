@@ -157,7 +157,7 @@ function deal_card() {
       ++used_cards;
       found = true;
       if (used_cards == DECK_SIZE) {
-        deck = init_deck();
+        init_deck();
       }
     }
   }
@@ -209,7 +209,7 @@ function place_card_bot() {
   var available_diff_color_same_action;
   var available_wild;
   var available_plus_four;
-  if (bot.hand.cards[loc_of_pile_index].length > 0) {  //  card/s of the same color in hand
+  if (loc_of_pile_index != WILD && bot.hand.cards[loc_of_pile_index].length > 0) {  //  card/s of the same color in hand
     // Check same color cards
   }
   
@@ -218,6 +218,7 @@ function place_card_bot() {
   }
   //  outside of an if check for matching numbers in other colors
   //  always check for matching numbers no if needed
+  return false;
 }
 
 function turn_player() {
@@ -225,8 +226,8 @@ function turn_player() {
 }
 
 function turn_bot() { //  scripted turn
-  if (!place_card()) {
-    p.hand.cards.push(deal_card);
+  if (!place_card_bot()) {
+    bot.hand.sort_single_card(deal_card());
   }
 }
 
