@@ -238,8 +238,7 @@ function place_card_bot() {
   }
   for (var i = 0; i < bot.hand.cards.length; ++i) { //  checking for same number or same action in a different color
     if ((i == loc_of_pile_index) || i == WILD) {  //  skip wild and same color
-      // ++i;
-      continue;
+      ++i;
     }
     var cur_color = bot.hand.cards[i];
     for (var j = 0; j < cur_color.length; ++j) {
@@ -254,16 +253,6 @@ function place_card_bot() {
       }
     }
   }
-console.log(discard_pile);
-for (var i = 0; i < all_available.length; ++i) {
-  var current_array = all_available[i];
-  console.log(`Processing ${current_array.name} with ${current_array.cards.length} cards`);
-  
-  for (var j = 0; j < current_array.cards.length; ++j) {
-    var card = current_array.cards[j];
-    console.log(card); // Just log the card directly since you're pushing actual cards
-  }
-}
   return false;
 }
 
@@ -303,68 +292,10 @@ function turn_bot() { //  scripted turn
 
 // init_game();
 
-function test_place_card_bot() {
+function test_run() {
   init_deck();
-  
-  // Create a specific test hand for the bot
-  var test_hand = [
-    new Card("img/blue/3_blue.png", 1, "number", "blue", 3),        // Same color, different number
-    new Card("img/blue/block_blue.png", 1, "action_block", "blue", -2), // Same color action
-    new Card("img/red/block_red.png", 1, "action_block", "red", -2),     // Different color, same action
-    new Card("img/green/5_green.png", 1, "number", "green", 5),      // Different color, same number
-    new Card("img/yellow/7_yellow.png", 1, "number", "yellow", 7),   // Different color, different number
-    new Card("img/wild/wild_card.png", 1, "action", "black", -4),    // Wild card
-    new Card("img/wild/4_plus.png", 1, "action", "black", -4)        // Plus four card
-  ];
-  
-  // Set discard pile to blue 5 (number card)
-  discard_pile = new Card("img/blue/5_blue.png", 1, "number", "blue", 5);
-  
-  // Create bot with the test hand
-  bot = new Player(new Hand(test_hand));
-  
-  console.log("=== TEST SCENARIO ===");
-  console.log("Discard pile:", discard_pile);
-  console.log("=== BOT HAND CARDS ===");
-
-  // Log BLUE cards
-  console.log("BLUE Numbers:");
-  bot.hand.cards[BLUE][0].forEach(card => console.log(card));
-  console.log("BLUE Actions:");
-  bot.hand.cards[BLUE][1].forEach(card => console.log(card));
-
-  // Log GREEN cards
-  console.log("GREEN Numbers:");
-  bot.hand.cards[GREEN][0].forEach(card => console.log(card));
-  console.log("GREEN Actions:");
-  bot.hand.cards[GREEN][1].forEach(card => console.log(card));
-
-  // Log RED cards
-  console.log("RED Numbers:");
-  bot.hand.cards[RED][0].forEach(card => console.log(card));
-  console.log("RED Actions:");
-  bot.hand.cards[RED][1].forEach(card => console.log(card));
-
-  // Log WILD cards
-  console.log("WILD Cards:");
-  bot.hand.cards[WILD].forEach(card => console.log(card));
-
-  // Log YELLOW cards
-  console.log("YELLOW Numbers:");
-  bot.hand.cards[YELLOW][0].forEach(card => console.log(card));
-  console.log("YELLOW Actions:");
-  bot.hand.cards[YELLOW][1].forEach(card => console.log(card));
-
-  console.log("=== RUNNING place_card_bot() ===");
-  
-  place_card_bot();
+  hand_bot = new Hand(deal_hand());
+  bot = new Player(hand_bot);
+  discard_pile = deal_card();
+  turn_bot();
 }
-
-// Replace your test_game() call with:
-test_place_card_bot();
-
-/*
-messing up:
-  1) sorting number vs action (same color number go to sane color action)
-  2) regognizing same number different numbers
-*/
