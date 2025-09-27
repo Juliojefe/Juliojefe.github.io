@@ -5,8 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UNO</title>
   <script src="../js/script.js" defer></script>
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-  
+  <main class="play_area">
+    <!-- this is where bot hand will show upside down -->
+    <div id="hand_bot"></div>
+    <div id="center_of_table">
+      <!-- this will be the unused deck -->
+      <img src="../img/card back/card_back.png" alt="deck" id="deck"">
+      <!-- this is where the discard pile will go -->
+      <img src="" alt="discard pile" id="discard_pile">
+    </div>
+    <!-- this is where player hand will show facing up -->
+    <div id="player_hand"></div>
+  </main>  
 </body>
 </html>

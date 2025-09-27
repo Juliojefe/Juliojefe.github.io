@@ -1,0 +1,61 @@
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('../img/background.jpg');
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.play_area {
+  width: 100%;
+  height: calc(100vh - 1in); /* Full height minus 1 inch (0.5" top + 0.5" bottom) */
+  margin: 0.5in 0; /* 0.5 inch gap top and bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(240, 248, 255, 0.562);
+  border: 10px solid black;
+}
+
+/* Center area for deck and discard pile */
+#center_of_table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Notable space between deck and discard pile */
+}
+
+/* Card styling */
+#deck, #discard_pile {
+  width: 120px; /* Adjust card size as needed */
+  height: 180px; /* Adjust card size as needed */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide discard pile initially if empty */
+#discard_pile[src=""] {
+  display: none;
+}
+
+/* Bot hand at top */
+#hand_bot {
+  position: absolute;
+  top: 0.5in;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Player hand at bottom */
+#player_hand {
+  position: absolute;
+  bottom: 0.5in;
+  left: 50%;
+  transform: translateX(-50%);
+}
