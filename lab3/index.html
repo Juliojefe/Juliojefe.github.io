@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="script.js">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
   <title>Quiz</title>
 </head>
 <body>
@@ -11,15 +12,19 @@
   <label for="answerOne">What is the largest land animal?</label>
   <input id="answerOne">
   <p id="answerOneMessage"></p>
+  <img id="answerOneIcon" class="feedback-icon" src="" alt="">
   <!-- question 2 -->
   <div>What color is grass?</div>
-  <input type="radio" id="red" name="colors" value="red">
-  <label for="red">red</label>
-  <input type="radio" id="blue" name="colors" value="blue">
-  <label for="blue">blue</label>
-  <input type="radio" id="green" name="colors" value="green">
-  <label for="green">green</label>
+  <div id="colorOptions">
+    <input type="radio" id="red" name="colors" value="red">
+    <label for="red">red</label>
+    <input type="radio" id="blue" name="colors" value="blue">
+    <label for="blue">blue</label>
+    <input type="radio" id="green" name="colors" value="green">
+    <label for="green">green</label>
+  </div>
   <p id="answerTwoMessage"></p>
+  <img id="answerTwoIcon" class="feedback-icon" src="" alt="">
   <br>
   <!-- question 3 -->
   <div>What color is the sky?</div>
@@ -29,25 +34,28 @@
     <option> green </option>
   </select>
   <p id="answerThreeMessage"></p>
-
+  <img id="answerThreeIcon" class="feedback-icon" src="" alt="">
+  <!-- question 4 -->
   <div>What are the first three digits of pi?</div>
   <input type="number" id="answerFour" min="3" max="10" step="0.01">
   <p id="answerFourMessage"></p>
-
+  <img id="answerFourIcon" class="feedback-icon" src="" alt="">
+  <!-- question 5 -->
   <div>Which are not farm animals? (extra credit)</div>
-  <input type="checkbox" id="cat" name="animals" value="cat">
-  <label for="cat">cat</label>
-  <input type="checkbox" id="dog" name="animals" value="dog">
-  <label for="dog">dog</label>
-  <input type="checkbox" id="cow" name="animals" value="cow">
-  <label for="cow">cow</label>
-  <p id="answerFiveMessage"></p>
-
-  <div> Your score:
-      <span id="score"></span>
+  <div class="animals-container">
+    <input type="checkbox" id="cat" name="animals" value="cat">
+    <label for="cat">cat</label>
+    <input type="checkbox" id="dog" name="animals" value="dog">
+    <label for="dog">dog</label>
+    <input type="checkbox" id="cow" name="animals" value="cow">
+    <label for="cow">cow</label>
   </div>
+  <p id="answerFiveMessage"></p>
+  <img id="answerFiveIcon" class="feedback-icon" src="" alt="">
+  <div> Your score: <span id="score"></span></div>
+  <div id="congrats"></div>
+  <div>Quiz taken <span id="timesTaken">0</span> times</div>
   <br>
   <button id="submit">submit</button>
-  <script src="script.js"></script>
 </body>
 </html>
