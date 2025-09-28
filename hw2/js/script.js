@@ -12,6 +12,8 @@ let bot;
 let player;
 var discard_pile;
 var last_number_card;
+var selectedCard = null;
+var selectedCardElement = null;
 var discard_pile_html_image = document.querySelector("#discard_pile");
 var show_bot_hand = document.querySelector("#hand_bot");
 var show_player_hand = document.querySelector("#player_hand");
@@ -375,25 +377,39 @@ function display_bot_hand() {
   }
 }
 
+function handleCardClick(event) { //  on click
+  var cardElement = event.target;
+  var cardData = JSON.parse(cardElement.dataset.card);
+  if (selectedCardElement) {  // Remove previous selection
+    selectedCardElement.classList.remove("selected");
+  }
+  cardElement.classList.add('selected');
+  selectedCard = cardData;
+  selectedCardElement = cardElement;
+}
+
 function display_player_hand() {
   for (var i = 0; i < player.hand.cards.length; i++) {
     for (var j = 0; j < player.hand.cards[i].length; j++) {
       for (var k = 0; k < player.hand.cards[i][j].length; k++) {
         var card = player.hand.cards[i][j][k];
-        var cardImg = document.createElement("img");
-        cardImg.src = card.filePath;
-        cardImg.alt = "player card";
-        show_player_hand.appendChild(cardImg);
+        var card_img = document.createElement("img");
+        card_img.src = card.filePath;
+        card_img.alt = "player card";
+        card_img.className = "player-card";
+        card_img.dataset.card = JSON.stringify(card);  // store card data in element
+        card_img.addEventListener('click', handleCardClick);
+        show_player_hand.appendChild(card_img);
       }
     }
   }
 }
 
 function add_bot_card() {
-  var cardImg = document.createElement("img");
-  cardImg.src = "../img/card\ back/card_back.png";
-  cardImg.alt = "bot card";
-  show_bot_hand.appendChild(cardImg);
+  var card_img = document.createElement("img");
+  card_img.src = "../img/card\ back/card_back.png";
+  card_img.alt = "bot card";
+  show_bot_hand.appendChild(card_img);
 }
 
 function remove_bot_card() {
@@ -416,10 +432,6 @@ function init_game() {
   player = new Player(hand_player);
   discard_pile = deal_starting_card();
   discard_pile_html_image.src = discard_pile.filePath;
-  bot.hand.sort_single_card(deal_card());
-  bot.hand.sort_single_card(deal_card());
-  bot.hand.sort_single_card(deal_card());
-  console.log(bot.hand.cards);
   display_bot_hand();
   display_player_hand();
   // var who = goes_first();
@@ -434,115 +446,3 @@ function init_game() {
 }
 
 init_game();
-
-// function test_two_bots() {
-//   console.log("=== STARTING TWO BOT SIMULATION ===");
-  
-//   init_deck();
-  
-//   // Create two bots
-//   var hand_bot1 = new Hand(deal_hand());
-//   var hand_bot2 = new Hand(deal_hand());
-//   var bot1 = new Player(hand_bot1);
-//   var bot2 = new Player(hand_bot2);
-  
-//   discard_pile = deal_starting_card().filePath;
-  
-//   console.log(`Starting discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
-//   console.log(`Bot1 starting hand count: ${bot1.hand.card_count}`);
-//   console.log(`Bot2 starting hand count: ${bot2.hand.card_count}`);
-  
-//   var turn_count = 0;
-//   var current_player = 1; // 1 for bot1, 2 for bot2
-  
-//   while (bot1.hand.card_count > 0 && bot2.hand.card_count > 0) {
-//     turn_count++;
-//     var active_bot = (current_player === 1) ? bot1 : bot2;
-//     var bot_name = `Bot${current_player}`;
-    
-//     console.log(`\n--- TURN ${turn_count} (${bot_name}) ---`);
-//     console.log(`Current discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
-//     console.log(`${bot_name} hand count before turn: ${active_bot.hand.card_count}`);
-    
-//     // Show current bot's hand by color count
-//     show_bot_hand_counts(active_bot, bot_name);
-    
-//     // Check if current player is affected by action card
-//     if (handle_action_card_effects(active_bot, bot_name)) {
-//       // Action card effect applied, skip normal turn
-//     } else {
-//       // Normal turn - no action card affecting this player
-//       var original_bot = bot;
-//       bot = active_bot;
-      
-//       var could_place = place_card_bot();
-      
-//       if (!could_place) {
-//         console.log(`${bot_name} couldn't place a card, drawing...`);
-//         var drawn_card = deal_card();
-//         console.log(`${bot_name} drew: ${drawn_card.color} ${drawn_card.numeric_value} (${drawn_card.type})`);
-//         active_bot.hand.sort_single_card(drawn_card);
-//         ++active_bot.hand.card_count;
-//         console.log(`${bot_name} trying to place drawn card...`);
-        
-//         var placed_drawn = place_specific_card_bot(drawn_card);
-//         if (placed_drawn) {
-//           console.log(`${bot_name} successfully placed drawn card!`);
-//         } else {
-//           console.log(`${bot_name} couldn't place drawn card, turn ends`);
-//         }
-//       }
-      
-//       bot = original_bot;
-//     }
-    
-//     console.log(`${bot_name} hand count after turn: ${active_bot.hand.card_count}`);
-//     console.log(`New discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
-//     console.log(`Bot1: ${bot1.hand.card_count} cards | Bot2: ${bot2.hand.card_count} cards`);
-    
-//     // Switch players
-//     current_player = (current_player === 1) ? 2 : 1;
-    
-//     // Safety check to prevent infinite loops
-//     if (turn_count > 200) {
-//       console.log("SAFETY BREAK: Too many turns, ending test");
-//       break;
-//     }
-//   }
-  
-//   if (bot1.hand.card_count === 0) {
-//     console.log(`\n🎉 BOT1 WINS! Completed in ${turn_count} turns!`);
-//     console.log(`Final scores - Bot1: 0 cards, Bot2: ${bot2.hand.card_count} cards`);
-//   } else if (bot2.hand.card_count === 0) {
-//     console.log(`\n🎉 BOT2 WINS! Completed in ${turn_count} turns!`);
-//     console.log(`Final scores - Bot1: ${bot1.hand.card_count} cards, Bot2: 0 cards`);
-//   } else {
-//     console.log(`\n⚠️ Game ended early at turn ${turn_count}`);
-//     console.log(`Final scores - Bot1: ${bot1.hand.card_count} cards, Bot2: ${bot2.hand.card_count} cards`);
-//   }
-  
-//   console.log("=== SIMULATION COMPLETE ===");
-// }
-
-// function show_bot_hand_counts(bot, bot_name) {
-//   var colors = ["Blue", "Green", "Red", "Yellow"];
-//   var color_counts = [];
-  
-//   for (var color = 0; color < bot.hand.cards.length; color++) {
-//     var numbers_count = bot.hand.cards[color][0].length;  // number cards
-//     var actions_count = bot.hand.cards[color][1].length;  // action cards
-//     var total_count = numbers_count + actions_count;
-    
-//     if (total_count > 0) {
-//       color_counts.push(`${colors[color]}: ${total_count}`);
-//     }
-//   }
-  
-//   if (color_counts.length > 0) {
-//     console.log(`${bot_name} cards by color: ${color_counts.join(", ")}`);
-//   } else {
-//     console.log(`${bot_name} has no cards!`);
-//   }
-// }
-
-// test_two_bots();
