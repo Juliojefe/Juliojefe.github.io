@@ -14,9 +14,12 @@ var discard_pile;
 var last_number_card;
 var selectedCard = null;
 var selectedCardElement = null;
+var player_has_placeable_cards = false;
 var discard_pile_html_image = document.querySelector("#discard_pile");
 var show_bot_hand = document.querySelector("#hand_bot");
 var show_player_hand = document.querySelector("#player_hand");
+var place_button = document.querySelector("#place_button");
+var draw_button = document.querySelector("#draw_button");
 class Card {
   constructor(filePath, count, type, color, numeric_value) {
     this.filePath = filePath;
@@ -377,31 +380,60 @@ function display_bot_hand() {
   }
 }
 
-function handleCardClick(event) { //  on click
+function player_can_place(card) {
+  var card_color_index = get_place_index(card);
+  var discard_color_index = get_place_index(discard_pile);
+  // same color or same number/action value
+  return (card_color_index === discard_color_index) || (card.numeric_value === discard_pile.numeric_value);
+}
+
+function handle_card_click(event) { //  on click
   var cardElement = event.target;
   var cardData = JSON.parse(cardElement.dataset.card);
-  if (selectedCardElement) {  // Remove previous selection
+  if (selectedCardElement) {  // remove previous selection
     selectedCardElement.classList.remove("selected");
   }
-  cardElement.classList.add('selected');
+  cardElement.classList.add("selected");
   selectedCard = cardData;
   selectedCardElement = cardElement;
+  if (player_can_place(selectedCard)) {
+    place_button.classList.add("selected");
+    draw_button.classList.remove("selected");
+  } else if (player_has_placeable_cards) {
+    place_button.classList.remove("selected");
+    draw_button.classList.remove("selected");
+  } else {
+    place_button.classList.remove("selected");
+    draw_button.classList.add("selected");
+  }
 }
 
 function display_player_hand() {
+  var placable_count = 0;
   for (var i = 0; i < player.hand.cards.length; i++) {
     for (var j = 0; j < player.hand.cards[i].length; j++) {
       for (var k = 0; k < player.hand.cards[i][j].length; k++) {
         var card = player.hand.cards[i][j][k];
+        if (player_can_place(card)) {
+          ++placable_count;
+        }
         var card_img = document.createElement("img");
         card_img.src = card.filePath;
         card_img.alt = "player card";
         card_img.className = "player-card";
         card_img.dataset.card = JSON.stringify(card);  // store card data in element
-        card_img.addEventListener('click', handleCardClick);
+        card_img.addEventListener('click', handle_card_click);
         show_player_hand.appendChild(card_img);
       }
     }
+  }
+  player_has_placeable_cards = (placable_count > 0)
+  if (player_has_placeable_cards > 0) {
+    place_button.classList.add("selected");
+    draw_button.classList.remove("selected");
+  } else {
+    place_button.classList.remove("selected");
+    draw_button.classList.add("selected"); 
   }
 }
 
