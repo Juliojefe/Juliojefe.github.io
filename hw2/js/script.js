@@ -12,9 +12,11 @@ let bot;
 let player;
 var discard_pile;
 var last_number_card;
-var selectedCard = null;
+var selected_card = null;
 var selectedCardElement = null;
 var player_has_placeable_cards = false;
+var game_active = true;
+var player_turn = true;
 var discard_pile_html_image = document.querySelector("#discard_pile");
 var show_bot_hand = document.querySelector("#hand_bot");
 var show_player_hand = document.querySelector("#player_hand");
@@ -167,6 +169,56 @@ function init_deck() {
       new Card("../img/yellow/inverse_yellow.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "yellow", -3)
     ]
   ];
+}
+
+place_button.addEventListener("click", handle_place);
+function handle_place() {
+  if (!game_active || !player_turn) {
+    return;
+  }
+  if (selected_card && player_can_place(selected_card)) {
+    discard_pile = selected_card;
+    discard_pile_html_image.src = selected_card.filePath;
+    player.hand.remove_card(selected_card);
+    if (selectedCardElement) {  // clear selection
+      selectedCardElement.classList.remove("selected");
+    }
+    selected_card = null;
+    selectedCardElement = null;
+    display_player_hand();
+    if (!game_active) {
+      return;
+    }
+    player_turn = false;  //  switch turn to bot
+    if (game_active) {
+      turn_bot();
+      player_turn = true; // Switch back to player
+    }
+  }
+}
+
+draw_button.addEventListener("click", handle_draw);
+function handle_draw() {
+  if (!game_active || !player_turn) {
+    return;
+  }
+  if (!player_has_placeable_cards) {
+    var card = deal_card();
+    player.hand.sort_single_card(card);
+    ++player.hand.card_count;
+    display_player_hand();
+    if (player_can_place(card)) {
+      player_has_placeable_cards = true;
+      console.log("Drawn card can be placed - waiting for player to place it");
+    } else {
+      console.log("Drawn card cannot be placed - turn should end");
+      player_turn = false;  //  end player turn
+      if (game_active) {
+        turn_bot();
+        player_turn = true;
+      }
+    }
+  }
 }
 
 function deal_starting_card() { //  make sure first card is a numeber card
@@ -347,6 +399,26 @@ function handle_action_card_effects_bot() {
       bot.hand.sort_single_card(deal_card());
       bot.hand.sort_single_card(deal_card());
       bot.hand.card_count += 2;
+      display_bot_hand();
+      mask_discard_pile();
+      return true;  //  skip turn after drawing
+    } else { //  block or inverse
+      console.log(`is skipped due to ${discard_pile.type}!`);
+      mask_discard_pile();
+      return true;  //  skip turn
+    }
+  }
+  return false;  //  no action card, continue normal turn
+}
+
+function handle_action_card_effects_player() {
+  if (discard_pile.type != "number") {  //  handle action card effects
+    if (discard_pile.type == "action_plus2") { //  plus two
+      console.log("draws 2 cards due to +2!");
+      player.hand.sort_single_card(deal_card());
+      player.hand.sort_single_card(deal_card());
+      player.hand.card_count += 2;
+      display_player_hand();
       mask_discard_pile();
       return true;  //  skip turn after drawing
     } else { //  block or inverse
@@ -359,19 +431,46 @@ function handle_action_card_effects_bot() {
 }
 
 function turn_player() {
-  //  player choses what to do during their turn
+  if (handle_action_card_effects_player()) {  //  if true skip turn
+    return;
+  } else {
+    if (!player_has_placeable_cards) {
+      var card = deal_card();
+      player.hand.sort_single_card(card);
+      ++player.hand.card_count;
+      if (player_can_place(card)) {
+        //  must place drawn card
+      } else {
+        return; //  cant place drawn card turn ends 
+      }
+      display_player_hand();
+    }
+  }
 }
 
 function turn_bot() { //  scripted turn
-  if (!place_card_bot()) {  //  if no card can be placed
-    var card = deal_card(); //  get a card
-    bot.hand.sort_single_card(card);
-    ++bot.hand.card_count;
-    place_specific_card_bot(card);  //  place new card if possible otherwise end turn
+  if (!game_active || player_turn) { // sheck if game is active and it's bot's turn
+    return;
+  }
+  if (handle_action_card_effects_bot()) {
+    return;
+  } else {
+    if (!place_card_bot()) {
+      var card = deal_card();
+      bot.hand.sort_single_card(card);
+      ++bot.hand.card_count;
+      place_specific_card_bot(card);
+    }
+    display_bot_hand();
   }
 }
 
 function display_bot_hand() {
+  show_bot_hand.innerHTML = "";
+  if (bot.hand.card_count === 0) {  //  win logic
+    end_game("bot");
+    return;
+  }
   for (var i = 0; i < bot.hand.card_count; i++) {
     var cardImg = document.createElement("img");
     cardImg.src = "../img/card\ back/card_back.png";
@@ -394,9 +493,9 @@ function handle_card_click(event) { //  on click
     selectedCardElement.classList.remove("selected");
   }
   cardElement.classList.add("selected");
-  selectedCard = cardData;
+  selected_card = cardData;
   selectedCardElement = cardElement;
-  if (player_can_place(selectedCard)) {
+  if (player_can_place(selected_card)) {
     place_button.classList.add("selected");
     draw_button.classList.remove("selected");
   } else if (player_has_placeable_cards) {
@@ -409,7 +508,18 @@ function handle_card_click(event) { //  on click
 }
 
 function display_player_hand() {
+  show_player_hand.innerHTML = "";
   var placable_count = 0;
+  var total_cards = 0;  //  win logic
+  for (var i = 0; i < player.hand.cards.length; i++) {
+    for (var j = 0; j < player.hand.cards[i].length; j++) {
+      total_cards += player.hand.cards[i][j].length;
+    }
+  }
+  if (total_cards === 0) {
+    end_game("player");
+    return;
+  }
   for (var i = 0; i < player.hand.cards.length; i++) {
     for (var j = 0; j < player.hand.cards[i].length; j++) {
       for (var k = 0; k < player.hand.cards[i][j].length; k++) {
@@ -427,8 +537,8 @@ function display_player_hand() {
       }
     }
   }
-  player_has_placeable_cards = (placable_count > 0)
-  if (player_has_placeable_cards > 0) {
+  player_has_placeable_cards = (placable_count > 0);
+  if (player_has_placeable_cards) {
     place_button.classList.add("selected");
     draw_button.classList.remove("selected");
   } else {
@@ -449,32 +559,46 @@ function remove_bot_card() {
 }
 
 function remove_player_card() {
-  //  TODO
+  display_player_hand();
 }
 
 function add_player_card() {
-  //  TODO
+  display_player_hand();
+}
+
+function end_game(winner) {
+  game_active = false;
+  place_button.disabled = true;
+  draw_button.disabled = true;
+  place_button.classList.remove("selected");
+  draw_button.classList.remove("selected");
+  if (winner === "player") {  // show winner message
+    alert("🎉 Congratulations! You won! 🎉");
+  } else {
+    alert("🤖 Bot wins! Better luck next time! 🤖");
+  }
 }
 
 function init_game() {
   init_deck();
-  hand_bot = new Hand(deal_hand());
-  hand_player = new Hand(deal_hand());
+  var hand_bot = new Hand(deal_hand());
+  var hand_player = new Hand(deal_hand());
   bot = new Player(hand_bot);
   player = new Player(hand_player);
   discard_pile = deal_starting_card();
   discard_pile_html_image.src = discard_pile.filePath;
   display_bot_hand();
   display_player_hand();
-  // var who = goes_first();
-  // while ((player.hand.cards.length > 0) && (bot.hand.cards.length > 0)) {
-  //   if (who) {  //  player goes first
-  //     turn_player();
-  //     turn_bot();
-  //   }
-  //   turn_bot();
-  //   turn_player();
-  // }
+  player_turn = goes_first();
+  if (player_turn) {
+    console.log("Player goes first!");
+  } else {
+    console.log("Bot goes first!");
+    if (game_active) {
+      turn_bot();
+      player_turn = true;
+    }
+  }
 }
 
 init_game();

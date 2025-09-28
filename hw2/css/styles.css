@@ -141,7 +141,7 @@ img {
 }
 
 #place_button {
-  background-color: rgba(32, 249, 39, 0.525);
+  background-color: rgba(32, 249, 39, 0.372);
 }
 
 #place_button:hover {
@@ -157,7 +157,7 @@ img {
 }
 
 #draw_button {
-  background-color: rgba(255, 0, 0, 0.525);
+  background-color: rgba(255, 0, 0, 0.372);
 }
 
 #draw_button:hover {
