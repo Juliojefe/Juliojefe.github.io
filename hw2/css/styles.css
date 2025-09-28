@@ -4,58 +4,85 @@ body {
   background-size: cover;
   background-position: center;
   text-align: center;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
-  height: 100vh;
 }
 
 .play_area {
   width: 100%;
-  height: calc(100vh - 1in); /* Full height minus 1 inch (0.5" top + 0.5" bottom) */
-  margin: 0.5in 0; /* 0.5 inch gap top and bottom */
+  height: calc(100vh - 1in);
+  margin-top: 38px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(240, 248, 255, 0.562);
+  background-color: #c3e2edc6;
   border: 10px solid black;
 }
 
-/* Center area for deck and discard pile */
 #center_of_table {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px; /* Notable space between deck and discard pile */
 }
 
-/* Card styling */
-#deck, #discard_pile {
-  width: 120px; /* Adjust card size as needed */
-  height: 180px; /* Adjust card size as needed */
+img {
+  width: 120px;
+  height: 180px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: rotate(-90deg);
+  border: 5px solid black;
+  object-fit: cover;
 }
 
-/* Hide discard pile initially if empty */
-#discard_pile[src=""] {
-  display: none;
-}
-
-/* Bot hand at top */
 #hand_bot {
   position: absolute;
-  top: 0.5in;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%); /* center vertically */
+  background-color: #d18b96b3;
+  width: 35%;
+  height: calc(100vh - 1in);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(6, 1fr); /* 7 rows maximum */
+  align-content: start;
+  grid-auto-flow: column; /* fill column by column instead of row by row */
+  direction: rtl; /* right to left starting from right */
 }
 
-/* Player hand at bottom */
+#hand_bot img {
+  width: 75px;
+  height: 120px;
+  border-radius: 6px;
+  transform: rotate(-90deg);
+  border: 5px solid black;
+  object-fit: cover;
+  margin-right: 45px;
+}
+
 #player_hand {
   position: absolute;
-  bottom: 0.5in;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%); /* center vertically */
+  background-color: #facc78cc;
+  width: 35%;
+  height: calc(100vh - 1in);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* one fraction of the available space */
+  grid-template-rows: repeat(6, 1fr); /* 7 rows maximum */
+  align-content: start;
+  grid-auto-flow: column; /* fill column by column instead of row by row */
+  direction: ltr; /* right to left starting from right */
+}
+
+#player_hand img {
+  width: 75px;
+  height: 120px;
+  border-radius: 6px;
+  transform: rotate(-90deg);
+  border: 5px solid black;
+  object-fit: cover;
+  margin-left: 45px;
 }

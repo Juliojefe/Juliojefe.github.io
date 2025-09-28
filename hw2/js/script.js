@@ -12,6 +12,9 @@ let bot;
 let player;
 var discard_pile;
 var last_number_card;
+var discard_pile_html_image = document.querySelector("#discard_pile");
+var show_bot_hand = document.querySelector("#hand_bot");
+var show_player_hand = document.querySelector("#player_hand");
 class Card {
   constructor(filePath, count, type, color, numeric_value) {
     this.filePath = filePath;
@@ -52,6 +55,11 @@ class Hand {
     } else {
       this.cards[index][1].push(card);  // action card
     }
+    if (this === bot.hand) {
+      add_bot_card();
+    } else {
+      add_player_card();
+    }
   }
   remove_card(card) {
     --this.card_count;
@@ -67,6 +75,11 @@ class Hand {
     if (card_index !== -1) {
       target_array.splice(card_index, 1);
       console.log("card removed from hand");
+     if (this === bot.hand) {
+        remove_bot_card();
+      } else {
+        remove_player_card();
+      }
       return true;
     }
     console.log("card not found in hand");
@@ -86,67 +99,67 @@ function init_deck() {
   deck = [
     // BLUE (index 0)
     [
-      new Card("img/blue/0_blue.png", ZERO_COUNT, "number", "blue", 0),
-      new Card("img/blue/1_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 1),
-      new Card("img/blue/2_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 2),
-      new Card("img/blue/3_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 3),
-      new Card("img/blue/4_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 4),
-      new Card("img/blue/5_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 5),
-      new Card("img/blue/6_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 6),
-      new Card("img/blue/7_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 7),
-      new Card("img/blue/8_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 8),
-      new Card("img/blue/9_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 9),
-      new Card("img/blue/2plus_blue.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "blue", -1),
-      new Card("img/blue/block_blue.png", ONE_THROUGH_NINE_COUNT, "action_block", "blue", -2),
-      new Card("img/blue/inverse_blue.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "blue", -3)
+      new Card("../img/blue/0_blue.png", ZERO_COUNT, "number", "blue", 0),
+      new Card("../img/blue/1_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 1),
+      new Card("../img/blue/2_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 2),
+      new Card("../img/blue/3_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 3),
+      new Card("../img/blue/4_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 4),
+      new Card("../img/blue/5_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 5),
+      new Card("../img/blue/6_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 6),
+      new Card("../img/blue/7_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 7),
+      new Card("../img/blue/8_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 8),
+      new Card("../img/blue/9_blue.png", ONE_THROUGH_NINE_COUNT, "number", "blue", 9),
+      new Card("../img/blue/2plus_blue.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "blue", -1),
+      new Card("../img/blue/block_blue.png", ONE_THROUGH_NINE_COUNT, "action_block", "blue", -2),
+      new Card("../img/blue/inverse_blue.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "blue", -3)
     ],
     // GREEN (index 1)
     [
-      new Card("img/green/0_green.png", ZERO_COUNT, "number", "green", 0),
-      new Card("img/green/1_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 1),
-      new Card("img/green/2_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 2),
-      new Card("img/green/3_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 3),
-      new Card("img/green/4_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 4),
-      new Card("img/green/5_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 5),
-      new Card("img/green/6_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 6),
-      new Card("img/green/7_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 7),
-      new Card("img/green/8_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 8),
-      new Card("img/green/9_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 9),
-      new Card("img/green/2plus_green.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "green", -1),
-      new Card("img/green/block_green.png", ONE_THROUGH_NINE_COUNT, "action_block", "green", -2),
-      new Card("img/green/inverse_green.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "green", -3)
+      new Card("../img/green/0_green.png", ZERO_COUNT, "number", "green", 0),
+      new Card("../img/green/1_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 1),
+      new Card("../img/green/2_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 2),
+      new Card("../img/green/3_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 3),
+      new Card("../img/green/4_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 4),
+      new Card("../img/green/5_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 5),
+      new Card("../img/green/6_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 6),
+      new Card("../img/green/7_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 7),
+      new Card("../img/green/8_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 8),
+      new Card("../img/green/9_green.png", ONE_THROUGH_NINE_COUNT, "number", "green", 9),
+      new Card("../img/green/2plus_green.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "green", -1),
+      new Card("../img/green/block_green.png", ONE_THROUGH_NINE_COUNT, "action_block", "green", -2),
+      new Card("../img/green/inverse_green.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "green", -3)
     ],
     // RED (index 2)
     [
-      new Card("img/red/0_red.png", ZERO_COUNT, "number", "red", 0),
-      new Card("img/red/1_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 1),
-      new Card("img/red/2_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 2),
-      new Card("img/red/3_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 3),
-      new Card("img/red/4_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 4),
-      new Card("img/red/5_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 5),
-      new Card("img/red/6_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 6),
-      new Card("img/red/7_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 7),
-      new Card("img/red/8_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 8),
-      new Card("img/red/9_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 9),
-      new Card("img/red/2plus_red.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "red", -1),
-      new Card("img/red/block_red.png", ONE_THROUGH_NINE_COUNT, "action_block", "red", -2),
-      new Card("img/red/inverse_red.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "red", -3)
+      new Card("../img/red/0_red.png", ZERO_COUNT, "number", "red", 0),
+      new Card("../img/red/1_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 1),
+      new Card("../img/red/2_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 2),
+      new Card("../img/red/3_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 3),
+      new Card("../img/red/4_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 4),
+      new Card("../img/red/5_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 5),
+      new Card("../img/red/6_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 6),
+      new Card("../img/red/7_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 7),
+      new Card("../img/red/8_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 8),
+      new Card("../img/red/9_red.png", ONE_THROUGH_NINE_COUNT, "number", "red", 9),
+      new Card("../img/red/2plus_red.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "red", -1),
+      new Card("../img/red/block_red.png", ONE_THROUGH_NINE_COUNT, "action_block", "red", -2),
+      new Card("../img/red/inverse_red.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "red", -3)
     ],
     // YELLOW (index 4)
     [
-      new Card("img/yellow/0_yellow.png", ZERO_COUNT, "number", "yellow", 0),
-      new Card("img/yellow/1_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 1),
-      new Card("img/yellow/2_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 2),
-      new Card("img/yellow/3_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 3),
-      new Card("img/yellow/4_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 4),
-      new Card("img/yellow/5_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 5),
-      new Card("img/yellow/6_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 6),
-      new Card("img/yellow/7_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 7),
-      new Card("img/yellow/8_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 8),
-      new Card("img/yellow/9_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 9),
-      new Card("img/yellow/2plus_yellow.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "yellow", -1),
-      new Card("img/yellow/block_yellow.png", ONE_THROUGH_NINE_COUNT, "action_block", "yellow", -2),
-      new Card("img/yellow/inverse_yellow.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "yellow", -3)
+      new Card("../img/yellow/0_yellow.png", ZERO_COUNT, "number", "yellow", 0),
+      new Card("../img/yellow/1_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 1),
+      new Card("../img/yellow/2_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 2),
+      new Card("../img/yellow/3_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 3),
+      new Card("../img/yellow/4_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 4),
+      new Card("../img/yellow/5_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 5),
+      new Card("../img/yellow/6_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 6),
+      new Card("../img/yellow/7_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 7),
+      new Card("../img/yellow/8_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 8),
+      new Card("../img/yellow/9_yellow.png", ONE_THROUGH_NINE_COUNT, "number", "yellow", 9),
+      new Card("../img/yellow/2plus_yellow.png", ONE_THROUGH_NINE_COUNT, "action_plus2", "yellow", -1),
+      new Card("../img/yellow/block_yellow.png", ONE_THROUGH_NINE_COUNT, "action_block", "yellow", -2),
+      new Card("../img/yellow/inverse_yellow.png", ONE_THROUGH_NINE_COUNT, "action_inverse", "yellow", -3)
     ]
   ];
 }
@@ -160,7 +173,7 @@ function deal_starting_card() { //  make sure first card is a numeber card
     random_inner = Math.floor(Math.random() * deck.length);
     random_inner_index = Math.floor(Math.random() * deck[random_inner].length);
     var card = deck[random_inner][random_inner_index];
-    if ((card.count > 0) && (card.type == "number")) {
+    if ((card.count > 0) && (card.type === "number")) {
       --deck[random_inner][random_inner_index].count;
       ++used_cards;
       found = true;
@@ -304,6 +317,7 @@ function place_card_bot() {
   }
   console.log("Selected card:", selected_card);
   discard_pile = selected_card;   //  card has been placed
+  discard_pile_html_image.src = selected_card.filePath; //  update image
   bot.hand.remove_card(selected_card);  //  now remove card from hand
   return true;
 }
@@ -313,6 +327,7 @@ function place_specific_card_bot(card) {
   var index_discard_pile = get_place_index(discard_pile);  //  color location of discard pile
   if ((index_card == index_discard_pile) || (card.numeric_value == discard_pile.numeric_value)) { //  same color or numeric value
     discard_pile = card;
+    discard_pile_html_image.src = card.filePath;
     bot.hand.remove_card(card);
     return true;
   } else {
@@ -320,17 +335,17 @@ function place_specific_card_bot(card) {
   }
 }
 
-function handle_action_card_effects(target_bot, bot_name) {
+function handle_action_card_effects_bot() {
   if (discard_pile.type != "number") {  //  handle action card effects
     if (discard_pile.type == "action_plus2") { //  plus two
-      console.log(`${bot_name} draws 2 cards due to +2!`);
-      target_bot.hand.sort_single_card(deal_card());
-      target_bot.hand.sort_single_card(deal_card());
-      target_bot.hand.card_count += 2;
+      console.log("draws 2 cards due to +2!");
+      bot.hand.sort_single_card(deal_card());
+      bot.hand.sort_single_card(deal_card());
+      bot.hand.card_count += 2;
       mask_discard_pile();
       return true;  //  skip turn after drawing
     } else { //  block or inverse
-      console.log(`${bot_name} is skipped due to ${discard_pile.type}!`);
+      console.log(`is skipped due to ${discard_pile.type}!`);
       mask_discard_pile();
       return true;  //  skip turn
     }
@@ -351,134 +366,183 @@ function turn_bot() { //  scripted turn
   }
 }
 
-// function init_game() {
+function display_bot_hand() {
+  for (var i = 0; i < bot.hand.card_count; i++) {
+    var cardImg = document.createElement("img");
+    cardImg.src = "../img/card\ back/card_back.png";
+    cardImg.alt = "bot card";
+    show_bot_hand.appendChild(cardImg);
+  }
+}
+
+function display_player_hand() {
+  for (var i = 0; i < player.hand.cards.length; i++) {
+    for (var j = 0; j < player.hand.cards[i].length; j++) {
+      for (var k = 0; k < player.hand.cards[i][j].length; k++) {
+        var card = player.hand.cards[i][j][k];
+        var cardImg = document.createElement("img");
+        cardImg.src = card.filePath;
+        cardImg.alt = "player card";
+        show_player_hand.appendChild(cardImg);
+      }
+    }
+  }
+}
+
+function add_bot_card() {
+  var cardImg = document.createElement("img");
+  cardImg.src = "../img/card\ back/card_back.png";
+  cardImg.alt = "bot card";
+  show_bot_hand.appendChild(cardImg);
+}
+
+function remove_bot_card() {
+  show_bot_hand.removeChild(show_bot_hand.lastElementChild);
+}
+
+function remove_player_card() {
+  //  TODO
+}
+
+function add_player_card() {
+  //  TODO
+}
+
+function init_game() {
+  init_deck();
+  hand_bot = new Hand(deal_hand());
+  hand_player = new Hand(deal_hand());
+  bot = new Player(hand_bot);
+  player = new Player(hand_player);
+  discard_pile = deal_starting_card();
+  discard_pile_html_image.src = discard_pile.filePath;
+  bot.hand.sort_single_card(deal_card());
+  bot.hand.sort_single_card(deal_card());
+  bot.hand.sort_single_card(deal_card());
+  console.log(bot.hand.cards);
+  display_bot_hand();
+  display_player_hand();
+  // var who = goes_first();
+  // while ((player.hand.cards.length > 0) && (bot.hand.cards.length > 0)) {
+  //   if (who) {  //  player goes first
+  //     turn_player();
+  //     turn_bot();
+  //   }
+  //   turn_bot();
+  //   turn_player();
+  // }
+}
+
+init_game();
+
+// function test_two_bots() {
+//   console.log("=== STARTING TWO BOT SIMULATION ===");
+  
 //   init_deck();
-//   hand_bot = new Hand(deal_hand());
-//   hand_player = new Hand(deal_hand());
-//   bot = new Player(hand_bot);
-//   player = new Player(hand_player);
-//   discard_pile = deal_card();
-//   var who = goes_first();
-//   while ((player.hand.cards.length > 0) && (bot.hand.cards.length > 0)) {
-//     if (who) {  //  player goes first
-//       turn_player();
-//       turn_bot();
+  
+//   // Create two bots
+//   var hand_bot1 = new Hand(deal_hand());
+//   var hand_bot2 = new Hand(deal_hand());
+//   var bot1 = new Player(hand_bot1);
+//   var bot2 = new Player(hand_bot2);
+  
+//   discard_pile = deal_starting_card().filePath;
+  
+//   console.log(`Starting discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
+//   console.log(`Bot1 starting hand count: ${bot1.hand.card_count}`);
+//   console.log(`Bot2 starting hand count: ${bot2.hand.card_count}`);
+  
+//   var turn_count = 0;
+//   var current_player = 1; // 1 for bot1, 2 for bot2
+  
+//   while (bot1.hand.card_count > 0 && bot2.hand.card_count > 0) {
+//     turn_count++;
+//     var active_bot = (current_player === 1) ? bot1 : bot2;
+//     var bot_name = `Bot${current_player}`;
+    
+//     console.log(`\n--- TURN ${turn_count} (${bot_name}) ---`);
+//     console.log(`Current discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
+//     console.log(`${bot_name} hand count before turn: ${active_bot.hand.card_count}`);
+    
+//     // Show current bot's hand by color count
+//     show_bot_hand_counts(active_bot, bot_name);
+    
+//     // Check if current player is affected by action card
+//     if (handle_action_card_effects(active_bot, bot_name)) {
+//       // Action card effect applied, skip normal turn
+//     } else {
+//       // Normal turn - no action card affecting this player
+//       var original_bot = bot;
+//       bot = active_bot;
+      
+//       var could_place = place_card_bot();
+      
+//       if (!could_place) {
+//         console.log(`${bot_name} couldn't place a card, drawing...`);
+//         var drawn_card = deal_card();
+//         console.log(`${bot_name} drew: ${drawn_card.color} ${drawn_card.numeric_value} (${drawn_card.type})`);
+//         active_bot.hand.sort_single_card(drawn_card);
+//         ++active_bot.hand.card_count;
+//         console.log(`${bot_name} trying to place drawn card...`);
+        
+//         var placed_drawn = place_specific_card_bot(drawn_card);
+//         if (placed_drawn) {
+//           console.log(`${bot_name} successfully placed drawn card!`);
+//         } else {
+//           console.log(`${bot_name} couldn't place drawn card, turn ends`);
+//         }
+//       }
+      
+//       bot = original_bot;
 //     }
-//     turn_bot();
-//     turn_player();
+    
+//     console.log(`${bot_name} hand count after turn: ${active_bot.hand.card_count}`);
+//     console.log(`New discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
+//     console.log(`Bot1: ${bot1.hand.card_count} cards | Bot2: ${bot2.hand.card_count} cards`);
+    
+//     // Switch players
+//     current_player = (current_player === 1) ? 2 : 1;
+    
+//     // Safety check to prevent infinite loops
+//     if (turn_count > 200) {
+//       console.log("SAFETY BREAK: Too many turns, ending test");
+//       break;
+//     }
+//   }
+  
+//   if (bot1.hand.card_count === 0) {
+//     console.log(`\n🎉 BOT1 WINS! Completed in ${turn_count} turns!`);
+//     console.log(`Final scores - Bot1: 0 cards, Bot2: ${bot2.hand.card_count} cards`);
+//   } else if (bot2.hand.card_count === 0) {
+//     console.log(`\n🎉 BOT2 WINS! Completed in ${turn_count} turns!`);
+//     console.log(`Final scores - Bot1: ${bot1.hand.card_count} cards, Bot2: 0 cards`);
+//   } else {
+//     console.log(`\n⚠️ Game ended early at turn ${turn_count}`);
+//     console.log(`Final scores - Bot1: ${bot1.hand.card_count} cards, Bot2: ${bot2.hand.card_count} cards`);
+//   }
+  
+//   console.log("=== SIMULATION COMPLETE ===");
+// }
+
+// function show_bot_hand_counts(bot, bot_name) {
+//   var colors = ["Blue", "Green", "Red", "Yellow"];
+//   var color_counts = [];
+  
+//   for (var color = 0; color < bot.hand.cards.length; color++) {
+//     var numbers_count = bot.hand.cards[color][0].length;  // number cards
+//     var actions_count = bot.hand.cards[color][1].length;  // action cards
+//     var total_count = numbers_count + actions_count;
+    
+//     if (total_count > 0) {
+//       color_counts.push(`${colors[color]}: ${total_count}`);
+//     }
+//   }
+  
+//   if (color_counts.length > 0) {
+//     console.log(`${bot_name} cards by color: ${color_counts.join(", ")}`);
+//   } else {
+//     console.log(`${bot_name} has no cards!`);
 //   }
 // }
 
-// init_game();
-
-function test_two_bots() {
-  console.log("=== STARTING TWO BOT SIMULATION ===");
-  
-  init_deck();
-  
-  // Create two bots
-  var hand_bot1 = new Hand(deal_hand());
-  var hand_bot2 = new Hand(deal_hand());
-  var bot1 = new Player(hand_bot1);
-  var bot2 = new Player(hand_bot2);
-  
-  discard_pile = deal_starting_card();
-  
-  console.log(`Starting discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
-  console.log(`Bot1 starting hand count: ${bot1.hand.card_count}`);
-  console.log(`Bot2 starting hand count: ${bot2.hand.card_count}`);
-  
-  var turn_count = 0;
-  var current_player = 1; // 1 for bot1, 2 for bot2
-  
-  while (bot1.hand.card_count > 0 && bot2.hand.card_count > 0) {
-    turn_count++;
-    var active_bot = (current_player === 1) ? bot1 : bot2;
-    var bot_name = `Bot${current_player}`;
-    
-    console.log(`\n--- TURN ${turn_count} (${bot_name}) ---`);
-    console.log(`Current discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
-    console.log(`${bot_name} hand count before turn: ${active_bot.hand.card_count}`);
-    
-    // Show current bot's hand by color count
-    show_bot_hand_counts(active_bot, bot_name);
-    
-    // Check if current player is affected by action card
-    if (handle_action_card_effects(active_bot, bot_name)) {
-      // Action card effect applied, skip normal turn
-    } else {
-      // Normal turn - no action card affecting this player
-      var original_bot = bot;
-      bot = active_bot;
-      
-      var could_place = place_card_bot();
-      
-      if (!could_place) {
-        console.log(`${bot_name} couldn't place a card, drawing...`);
-        var drawn_card = deal_card();
-        console.log(`${bot_name} drew: ${drawn_card.color} ${drawn_card.numeric_value} (${drawn_card.type})`);
-        active_bot.hand.sort_single_card(drawn_card);
-        ++active_bot.hand.card_count;
-        console.log(`${bot_name} trying to place drawn card...`);
-        
-        var placed_drawn = place_specific_card_bot(drawn_card);
-        if (placed_drawn) {
-          console.log(`${bot_name} successfully placed drawn card!`);
-        } else {
-          console.log(`${bot_name} couldn't place drawn card, turn ends`);
-        }
-      }
-      
-      bot = original_bot;
-    }
-    
-    console.log(`${bot_name} hand count after turn: ${active_bot.hand.card_count}`);
-    console.log(`New discard pile: ${discard_pile.color} ${discard_pile.numeric_value} (${discard_pile.type})`);
-    console.log(`Bot1: ${bot1.hand.card_count} cards | Bot2: ${bot2.hand.card_count} cards`);
-    
-    // Switch players
-    current_player = (current_player === 1) ? 2 : 1;
-    
-    // Safety check to prevent infinite loops
-    if (turn_count > 200) {
-      console.log("SAFETY BREAK: Too many turns, ending test");
-      break;
-    }
-  }
-  
-  if (bot1.hand.card_count === 0) {
-    console.log(`\n🎉 BOT1 WINS! Completed in ${turn_count} turns!`);
-    console.log(`Final scores - Bot1: 0 cards, Bot2: ${bot2.hand.card_count} cards`);
-  } else if (bot2.hand.card_count === 0) {
-    console.log(`\n🎉 BOT2 WINS! Completed in ${turn_count} turns!`);
-    console.log(`Final scores - Bot1: ${bot1.hand.card_count} cards, Bot2: 0 cards`);
-  } else {
-    console.log(`\n⚠️ Game ended early at turn ${turn_count}`);
-    console.log(`Final scores - Bot1: ${bot1.hand.card_count} cards, Bot2: ${bot2.hand.card_count} cards`);
-  }
-  
-  console.log("=== SIMULATION COMPLETE ===");
-}
-
-function show_bot_hand_counts(bot, bot_name) {
-  var colors = ["Blue", "Green", "Red", "Yellow"];
-  var color_counts = [];
-  
-  for (var color = 0; color < bot.hand.cards.length; color++) {
-    var numbers_count = bot.hand.cards[color][0].length;  // number cards
-    var actions_count = bot.hand.cards[color][1].length;  // action cards
-    var total_count = numbers_count + actions_count;
-    
-    if (total_count > 0) {
-      color_counts.push(`${colors[color]}: ${total_count}`);
-    }
-  }
-  
-  if (color_counts.length > 0) {
-    console.log(`${bot_name} cards by color: ${color_counts.join(", ")}`);
-  } else {
-    console.log(`${bot_name} has no cards!`);
-  }
-}
-
-test_two_bots();
+// test_two_bots();
