@@ -2,7 +2,7 @@ let zipCode = document.querySelector("#zipInput");
 zipCode.addEventListener("input", zipInput);
 
 let password = document.querySelector("#passwordInput");
-password.addEventListener("input", suggestPass);
+password.addEventListener("click", suggestPass);
 
 let usernameInput = document.querySelector("#usernameInput");
 usernameInput.addEventListener("input", checkAvailableUsername);
@@ -10,7 +10,10 @@ usernameInput.addEventListener("input", checkAvailableUsername);
 let statesSelect = document.querySelector("#statesSelect");
 statesSelect.addEventListener("change", handleStateSelect);
 
-let countySelect = document.querySelector("#selectCounty"); // Changed from #countySelect to #selectCounty
+let countySelect = document.querySelector("#selectCounty");
+
+let submit = document.querySelector("#submit");
+submit.addEventListener("click", handleSubmit);
 
 let state;
 
@@ -94,11 +97,20 @@ function checkAvailableUsername() {
   try {
     let username = usernameInput.value;
     if ((username == "eeny") || (username == "meeny") || (username == "miny") || (username == "maria")) {
+      document.querySelector("#usernameMessage").style = "red";
       document.querySelector("#usernameMessage").textContent = "Username in use: unavailable try another...";
+    } else {
+      document.querySelector("#usernameMessage").style = "green";
+      document.querySelector("#usernameMessage").textContent = "Username available";
     }
+
   } catch (error) {
     console.log(error);
   }
+}
+
+function handleSubmit() {
+  //  TODO
 }
 
 setUpFrom();
