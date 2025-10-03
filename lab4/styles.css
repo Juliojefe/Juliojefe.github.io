@@ -1,0 +1,43 @@
+body {
+  background-color: aqua;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#boxThing {
+  background-color: white;
+  height: 90vh;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  border: 5px black solid;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.674);
+  font-family: 'Courier New', Courier, monospace;
+  padding-left: 200px;
+  padding-bottom: 20px;
+}
+
+#boxThing input {
+  width: 500px;
+}
+
+#boxThing select {
+  width: 505px;
+}
+
+#boxThing button {
+  width: 505px;
+  background-color: #24A0ED;
+  color: white;
+}
+
+#boxThing button:hover {
+  background-color: blue;
+}
