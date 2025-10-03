@@ -15,6 +15,8 @@ let countySelect = document.querySelector("#selectCounty");
 let submit = document.querySelector("#submit");
 submit.addEventListener("click", handleSubmit);
 
+let chosenUsername;
+
 let state;
 
 async function setUpFrom() {
@@ -87,6 +89,7 @@ async function suggestPass() {
       throw new Error("response failed");
     }
     let suggestedPasswordData = await suggestResponse.json();
+    document.querySelector("#suggestedPass").style.color = "orange";
     document.querySelector("#suggestedPass").textContent = "suggested password: " + suggestedPasswordData.password;
   } catch (error) {
     console.log(error);
@@ -97,20 +100,48 @@ function checkAvailableUsername() {
   try {
     let username = usernameInput.value;
     if ((username == "eeny") || (username == "meeny") || (username == "miny") || (username == "maria")) {
-      document.querySelector("#usernameMessage").style = "red";
+      document.querySelector("#usernameMessage").style.color = "red";
       document.querySelector("#usernameMessage").textContent = "Username in use: unavailable try another...";
     } else {
-      document.querySelector("#usernameMessage").style = "green";
+      document.querySelector("#usernameMessage").style.color = "green";
       document.querySelector("#usernameMessage").textContent = "Username available";
+      chosenUsername = username;
     }
-
   } catch (error) {
     console.log(error);
   }
 }
 
 function handleSubmit() {
-  //  TODO
+  var usernameMessage = document.querySelector("#usernameMessage");
+  let passwordInput = document.querySelector("#passwordInput").value;
+  let passwordRetype = document.querySelector("#passwordRetype").value;
+  let passwordMessage = document.querySelector("#passwordMessage");
+  let passwordRetypeMessage = document.querySelector("#passwordRetypeMessage");
+  var valid = true;
+    // Clear all previous messages first
+  usernameMessage.textContent = "";
+  passwordMessage.textContent = "";
+  passwordRetypeMessage.textContent = "";
+
+  if (chosenUsername.length < 3) {
+    usernameMessage.style.color = "red";
+    usernameMessage.textContent = "That username is not long enough";
+    valid = false;
+  } 
+  if (passwordInput.length < 6) {
+    passwordMessage.style.color = "red";
+    passwordMessage.textContent = "That password is too short";
+    valid = false;
+  }
+  if (passwordInput != passwordRetype) {
+    passwordRetypeMessage.style.color = "red";
+    passwordRetypeMessage.textContent = "Retype Password";
+    valid = false;
+  }
+  if (valid) {
+    alert("successful sign up");
+  }
 }
 
 setUpFrom();
